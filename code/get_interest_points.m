@@ -31,15 +31,24 @@ function [x, y, confidence, scale, orientation] = get_interest_points(image, fea
     windowed_IxIy = imgaussfilt(IxIy, WINDOW_SIZE);
     windowed_Iy_squared = imgaussfilt(Iy_squared, WINDOW_SIZE);
     
+    
     [y, x] = size(image);
+%     eigenvalues = zeros(y,x,2);
+    R = zeros(y,x);
+    k = 0.05;
     for yind = 1:y
         for xind = 1:x
             M = [windowed_Ix_squared(y,x)  windowed_IxIy(y,x);
-                 windowed_IxIy(y,x)  windowed_Iy_squared(y,x);]; 
+                 windowed_IxIy(y,x)  windowed_Iy_squared(y,x)]; 
              
-            eigenvalues = eig(M);
+%             eigenvalues(y,x,:) = eig(M);
+            eigenvalue = eig(M);
+            
+            R(y,x) = eigenvalue(1) * eigenvalue(2) - ...
+                k * (eigenvalue(1) + eigenvalue(2)) ^ 2;
         end
     end
 
+    temp = 0;
 end
 
