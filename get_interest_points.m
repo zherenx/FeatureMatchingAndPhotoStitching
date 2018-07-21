@@ -18,27 +18,23 @@
 %   do not need to make scale and orientation invariant local features.
 function [x, y, confidence, scale, orientation] = get_interest_points(image, feature_width)
 
-% Implement the Harris corner detector (See Szeliski 4.1.1) to start with.
-% You can create additional interest point detector functions (e.g. MSER)
-% for extra credit.
+    WINDOW_SIZE = 5;
 
-% If you're finding spurious interest point detections near the boundaries,
-% it is safe to simply suppress the gradients / corners near the edges of
-% the image.
-
-% The lecture slides and textbook are a bit vague on how to do the
-% non-maximum suppression once you've thresholded the cornerness score.
-% You are free to experiment. Here are some helpful functions:
-%  BWLABEL and the newer BWCONNCOMP will find connected components in 
-% thresholded binary image. You could, for instance, take the maximum value
-% within each component.
-%  COLFILT can be used to run a max() operator on each sliding window. You
-% could use this to ensure that every interest point is at a local maximum
-% of cornerness.
-
-% Placeholder that you can delete -- random points
-x = ceil(rand(500,1) * size(image,2));
-y = ceil(rand(500,1) * size(image,1));
+    % Calculate the vertical and horizontal derivative
+    [Ix, Iy] = gradient(image);
+    
+    Ix_squared = Ix ^ 2;
+    IxIy = Ix * Iy;
+    Iy_squared = Iy ^ 2;
+    
+    windowed_Ix_squared = imgaussfilt(Ix_squared, WINDOW_SIZE);
+    windowed_IxIy = imgaussfilt(IxIy, WINDOW_SIZE);
+    windowed_Iy_squared = imgaussfilt(Iy_squared, WINDOW_SIZE);
+    
+    M = [windowed_Ix_squared  windowed_IxIy;
+         windowed_IxIy  windowed_Iy_squared;];
+     
+    eigenvalues = eig(M);
 
 end
 
