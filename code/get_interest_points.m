@@ -23,18 +23,23 @@ function [x, y, confidence, scale, orientation] = get_interest_points(image, fea
     % Calculate the vertical and horizontal derivative
     [Ix, Iy] = gradient(image);
     
-    Ix_squared = Ix ^ 2;
-    IxIy = Ix * Iy;
-    Iy_squared = Iy ^ 2;
+    Ix_squared = Ix .^ 2;
+    IxIy = Ix .* Iy;
+    Iy_squared = Iy .^ 2;
     
     windowed_Ix_squared = imgaussfilt(Ix_squared, WINDOW_SIZE);
     windowed_IxIy = imgaussfilt(IxIy, WINDOW_SIZE);
     windowed_Iy_squared = imgaussfilt(Iy_squared, WINDOW_SIZE);
     
-    M = [windowed_Ix_squared  windowed_IxIy;
-         windowed_IxIy  windowed_Iy_squared;];
-     
-    eigenvalues = eig(M);
+    [y, x] = size(image);
+    for yind = 1:y
+        for xind = 1:x
+            M = [windowed_Ix_squared(y,x)  windowed_IxIy(y,x);
+                 windowed_IxIy(y,x)  windowed_Iy_squared(y,x);]; 
+             
+            eigenvalues = eig(M);
+        end
+    end
 
 end
 
