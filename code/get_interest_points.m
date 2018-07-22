@@ -38,13 +38,13 @@ function [x, y, confidence, scale, orientation] = get_interest_points(image, fea
     k = 0.05;
     for yind = 1:y
         for xind = 1:x
-            M = [windowed_Ix_squared(y,x)  windowed_IxIy(y,x);
-                 windowed_IxIy(y,x)  windowed_Iy_squared(y,x)]; 
+            M = [windowed_Ix_squared(yind, xind)  windowed_IxIy(yind, xind);
+                 windowed_IxIy(yind, xind)  windowed_Iy_squared(yind, xind)]; 
              
 %             eigenvalues(y,x,:) = eig(M);
             eigenvalue = eig(M);
             
-            R(y,x) = eigenvalue(1) * eigenvalue(2) - ...
+            R(yind,xind) = eigenvalue(1) * eigenvalue(2) - ...
                 k * (eigenvalue(1) + eigenvalue(2)) ^ 2;
         end
     end
