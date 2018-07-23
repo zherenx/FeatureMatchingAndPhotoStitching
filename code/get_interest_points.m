@@ -18,7 +18,7 @@
 %   do not need to make scale and orientation invariant local features.
 function [x, y, confidence, scale, orientation] = get_interest_points(image, feature_width)
 
-    WINDOW_SIZE = 5;
+    WINDOW_SIZE = feature_width;
 
     % Calculate the vertical and horizontal derivative
     [Ix, Iy] = gradient(image);
@@ -48,7 +48,11 @@ function [x, y, confidence, scale, orientation] = get_interest_points(image, fea
                 k * (eigenvalue(1) + eigenvalue(2)) ^ 2;
         end
     end
-
-    temp = 0;
+    
+    threshold = min(R(:)) + 0.06 * range(R(:));
+    filtered = R .* (R > threshold);
+    
+    suppressed = imregionalmax(R);
+    [y, x] = find(suppressed);
 end
 
