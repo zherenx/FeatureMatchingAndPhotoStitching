@@ -52,7 +52,7 @@ image2 = imresize(image2, scale_factor, 'bilinear');
 image1_bw = rgb2gray(image1);
 image2_bw = rgb2gray(image2);
 
-feature_width = 16; %width and height of each local feature, in pixels. 
+feature_width = 9; %width and height of each local feature, in pixels. 
 
 %% B) Find distinctive points in each image. Szeliski 4.1.1
 % !!! You will need to implement get_interest_points. !!!

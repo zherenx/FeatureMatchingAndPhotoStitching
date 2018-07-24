@@ -16,9 +16,10 @@
 % 'scale' and 'orientation' are nx1 vectors indicating the scale and
 %   orientation of each interest point. These are OPTIONAL. By default you
 %   do not need to make scale and orientation invariant local features.
-function [x, y, confidence, scale, orientation] = get_interest_points(image, feature_width)
+function [width, height, confidence, scale, orientation] = get_interest_points(image, feature_width)
 
     WINDOW_SIZE = feature_width;
+    shift = 5;
 
     % Calculate the vertical and horizontal derivative
     [Ix, Iy] = gradient(image);
@@ -27,32 +28,65 @@ function [x, y, confidence, scale, orientation] = get_interest_points(image, fea
     IxIy = Ix .* Iy;
     Iy_squared = Iy .^ 2;
     
-    windowed_Ix_squared = imgaussfilt(Ix_squared, WINDOW_SIZE);
-    windowed_IxIy = imgaussfilt(IxIy, WINDOW_SIZE);
-    windowed_Iy_squared = imgaussfilt(Iy_squared, WINDOW_SIZE);
+    windowed_Ix_squared = imgaussfilt(Ix_squared, 'FilterSize' ,WINDOW_SIZE);
+    windowed_IxIy = imgaussfilt(IxIy, 'FilterSize' ,WINDOW_SIZE);
+    windowed_Iy_squared = imgaussfilt(Iy_squared, 'FilterSize' ,WINDOW_SIZE);
     
     
-    [y, x] = size(image);
+    [height, width] = size(image);
 %     eigenvalues = zeros(y,x,2);
-    R = zeros(y,x);
+    R = zeros(height,width);
     k = 0.05;
-    for yind = 1:y
-        for xind = 1:x
-            M = [windowed_Ix_squared(yind, xind)  windowed_IxIy(yind, xind);
-                 windowed_IxIy(yind, xind)  windowed_Iy_squared(yind, xind)]; 
+    for y = 1:height
+        for x = 1:width
+            
+            M = zeros(2,2);
+            
+%             if y > WINDOW_SIZE/2 && y < height - WINDOW_SIZE/2 ...
+%                     && x > WINDOW_SIZE/2 && x < width - WINDOW_SIZE/2
+%                 for y_win = y - floor(WINDOW_SIZE/2) : y + floor(WINDOW_SIZE/2)
+%                     for x_win = x - floor(WINDOW_SIZE/2) : x + floor(WINDOW_SIZE/2)
+%                         M = M + [windowed_Ix_squared(y_win, x_win)  windowed_IxIy(y_win, x_win);
+%                                  windowed_IxIy(y_win, x_win)  windowed_Iy_squared(y_win, x_win)];
+%                     end
+%                 end
+%             end
+            
+%             M = [windowed_Ix_squared(y, x)  windowed_IxIy(y, x);
+%                  windowed_IxIy(y, x)  windowed_Iy_squared(y, x)]; 
+
+            if y > shift && y < height - shift ...
+                    && x > shift && x < width - shift
+            M11 = windowed_Ix_squared(y-shift:y+shift,x-shift:x+shift);
+            M12 = windowed_IxIy(y-shift:y+shift,x-shift:x+shift);
+            M21 = windowed_IxIy(y-shift:y+shift,x-shift:x+shift);
+            M22 = windowed_Iy_squared(y-shift:y+shift,x-shift:x+shift);
+            M = [mean(M11(:))  mean(M12(:));
+                 mean(M21(:))  mean(M22(:))];
              
 %             eigenvalues(y,x,:) = eig(M);
             eigenvalue = eig(M);
             
-            R(yind,xind) = eigenvalue(1) * eigenvalue(2) - ...
-                k * (eigenvalue(1) + eigenvalue(2)) ^ 2;
+            R(y,x) = eigenvalue(1) * eigenvalue(2) - ...
+                k * (eigenvalue(1) + eigenvalue(2)) ^ 2;             
+            end
+
         end
     end
     
-    threshold = min(R(:)) + 0.06 * range(R(:));
+%     R = windowed_Ix_squared .* windowed_Iy_squared - windowed_IxIy.^2 ...
+%         - k * (windowed_Ix_squared + windowed_Iy_squared).^2;
+    
+
+    threshold = max(R(:)) * 0.1;
+%     threshold = ;
+
+% avg_r = mean(mean(R))
+% threshold = abs(5 * avg_r)
+
     filtered = R .* (R > threshold);
     
-    suppressed = imregionalmax(R);
-    [y, x] = find(suppressed);
+    suppressed = imregionalmax(filtered);
+    [height, width] = find(suppressed);
 end
 
