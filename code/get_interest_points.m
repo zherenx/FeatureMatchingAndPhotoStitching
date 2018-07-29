@@ -18,7 +18,6 @@
 %   do not need to make scale and orientation invariant local features.
 function [width, height, confidence, scale, orientation] = get_interest_points(image, feature_width)
 
-    WINDOW_SIZE = feature_width;
     shift = 5;
 
     % Calculate the vertical and horizontal derivative
@@ -37,30 +36,22 @@ function [width, height, confidence, scale, orientation] = get_interest_points(i
 %     eigenvalues = zeros(y,x,2);
     R = zeros(height,width);
     k = 0.05;
-    for y = 1:height
-        for x = 1:width
-
-            if y > shift && y < height - shift ...
-                    && x > shift && x < width - shift
+    for y = shift+1:height-shift
+        for x = shift+1:width-shift
             M11 = windowed_Ix_squared(y-shift:y+shift,x-shift:x+shift);
             M12 = windowed_IxIy(y-shift:y+shift,x-shift:x+shift);
             M21 = windowed_IxIy(y-shift:y+shift,x-shift:x+shift);
             M22 = windowed_Iy_squared(y-shift:y+shift,x-shift:x+shift);
+            
             M = [mean(M11(:))  mean(M12(:));
                  mean(M21(:))  mean(M22(:))];
              
-%             eigenvalues(y,x,:) = eig(M);
             eigenvalue = eig(M);
             
             R(y,x) = eigenvalue(1) * eigenvalue(2) - ...
-                k * (eigenvalue(1) + eigenvalue(2)) ^ 2;             
-            end
-
+                     k * (eigenvalue(1) + eigenvalue(2)) ^ 2;
         end
     end
-    
-%     R = windowed_Ix_squared .* windowed_Iy_squared - windowed_IxIy.^2 ...
-%         - k * (windowed_Ix_squared + windowed_Iy_squared).^2;
     
 
 %     threshold = max(R(:)) * 0.1;
@@ -68,21 +59,19 @@ function [width, height, confidence, scale, orientation] = get_interest_points(i
 %     avg_r = mean(mean(R))
 %     threshold = abs(5 * avg_r)
 
-    sum = 0;
-    counter = 0;
-    for i = 1:height
-        for j = 1:width
-            if R(i,j) > 0
-                sum = sum + R(i,j);
-                counter = counter + 1;
-            end
-        end
-    end
-
-    threshold = sum / counter * 5;
 
     
-    R1= ordfilt2(R,400,ones(20));
+    positiveR = R .* (R > 0);
+    sum_pos = sum(positiveR(:));
+    positiveR = R > 0;
+    counter = sum(positiveR(:));
+    
+    threshold = sum_pos / counter * 5;
+
+    
+    ordfilt_winsize = 20;
+    
+    R1= ordfilt2(R, ordfilt_winsize^2, ones(ordfilt_winsize));
     suppressed = (R1==R) & (R > threshold);
 
 
