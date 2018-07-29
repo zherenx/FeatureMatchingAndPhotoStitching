@@ -58,9 +58,12 @@ feature_width = 16; %width and height of each local feature, in pixels.
 % % !!! You will need to implement get_interest_points. !!!
 % [x1, y1] = get_interest_points(image1_bw, feature_width);
 % [x2, y2] = get_interest_points(image2_bw, feature_width);
+[x1, y1] = get_interest_points_modified(image1_bw, feature_width);
+[x2, y2] = get_interest_points_modified(image2_bw, feature_width);
+
 
 % % Use cheat_interest_points only for development and debugging!
-[x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
+% [x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
 
 % img1_pts = detectHarrisFeatures(image1_bw);
 % img2_pts = detectHarrisFeatures(image2_bw);

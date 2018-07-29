@@ -79,10 +79,10 @@ function [width, height, confidence, scale, orientation] = get_interest_points(i
         end
     end
 
-    threshold = sum / counter * 5;
+    threshold = sum / counter * 2;
 
     
-    R1= ordfilt2(R,400,ones(20));
+    R1= ordfilt2(R,121,ones(11));
     suppressed = (R1==R) & (R > threshold);
 
 
