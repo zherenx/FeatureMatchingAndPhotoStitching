@@ -56,9 +56,34 @@ function [features] = get_features(image, x, y, feature_width)
 % feature vector to some power that is less than one.
 
 %Placeholder that you can delete. Empty features.
-features = zeros(size(x,1), 128);
 
+difference = floor(feature_width / 2);
 
+features = zeros(size(x,1), (feature_width/4)^2*8);
+
+[im_y, im_x] = size(image);
+
+for ind = 1:size(x,1)
+    yval = y(ind);
+    xval = x(ind);
+
+    % Skip the feature if it is out of range.
+    if (xval-difference < 1 || xval+difference-1 > im_x || ...
+        yval-difference < 1 || yval+difference-1 > im_y)
+        continue;
+    end
+
+    patch = image(yval-difference:yval+difference-1, ...
+                  xval-difference:xval+difference-1);
+              
+    g = fspecial('gaussian', [16 16], 1);
+    patch = imfilter(patch, g);
+
+    [features_patch, visualization] = extractHOGFeatures(patch, ...
+        'CellSize', [16 16], 'BlockSize', [4 4]);
+
+    features(y, x) = features_patch;
+end
 
 end
 
