@@ -71,15 +71,15 @@ for ind = 1:size(x,1)
     xval = round(x(ind));
 
     % Skip the feature if it is out of range.
-    if (round(xval)-difference < 1 || round(xval)+difference-1 > im_x || ...
-        round(yval)-difference < 1 || round(yval)+difference-1 > im_y)
+    if (xval-difference < 1 || xval+difference-1 > im_x || ...
+        yval-difference < 1 || yval+difference-1 > im_y)
         continue;
     end
 
-    patch_x = dx(round(yval)-difference:round(yval)+difference-1, ...
-                  round(xval)-difference:round(xval)+difference-1);
-    patch_y = dy(round(yval)-difference:round(yval)+difference-1, ...
-                  round(xval)-difference:round(xval)+difference-1);
+    patch_x = dx(yval-difference:yval+difference-1, ...
+                  xval-difference:xval+difference-1);
+    patch_y = dy(yval-difference:yval+difference-1, ...
+                  xval-difference:xval+difference-1);
               
     g = fspecial('gaussian', [16 16], 1);
     patch_x = imfilter(patch_x, g);
@@ -116,24 +116,11 @@ for ind = 1:size(x,1)
             end
         end
     end
-    
-
-%     [features_patch, visualization] = extractHOGFeatures(patch, ...
-%         'CellSize', [16 16], 'BlockSize', [4 4]);
 
    
+    features(ind, :) = reshape(hist, [1 4*4*8]);
 
-    index = 1;
-    for i = 1:4
-        for j = 1:4
-            for k = 1:8
-                features(ind,index) = hist(i,j,k) / 16;
-                index = index + 1;
-            end
-        end
-    end
 
-%     features(y, x) = features_patch;
 end
 
 
