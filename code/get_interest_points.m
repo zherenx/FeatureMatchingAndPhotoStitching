@@ -82,11 +82,11 @@ function [width, height, confidence, scale, orientation] = get_interest_points(i
     threshold = sum / counter * 5;
 
     
-    R1= ordfilt2(R,400,ones(20));
-    suppressed = (R1==R) & (R > threshold);
+%     R1= ordfilt2(R,400,ones(20));
+%     suppressed = (R1==R) & (R > threshold);
 
-%     filtered = R .* (R > threshold);
-%     suppressed = imregionalmax(filtered);
+    filtered = R .* (R > threshold);
+    suppressed = imregionalmax(filtered);
 
     [height, width] = find(suppressed);
 end

@@ -57,6 +57,7 @@ function [features] = get_features(image, x, y, feature_width)
 
 %Placeholder that you can delete. Empty features.
 
+
 difference = floor(feature_width / 2);
 
 features = zeros(size(x,1), 128);
@@ -134,4 +135,8 @@ for ind = 1:size(x,1)
 
 %     features(y, x) = features_patch;
 end
+
+
+% features = extractHOGFeatures(image, [x y], 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
+
 

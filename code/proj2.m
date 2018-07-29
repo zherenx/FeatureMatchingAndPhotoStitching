@@ -62,6 +62,18 @@ feature_width = 16; %width and height of each local feature, in pixels.
 % % Use cheat_interest_points only for development and debugging!
 [x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
 
+% img1_pts = detectHarrisFeatures(image1_bw);
+% img2_pts = detectHarrisFeatures(image2_bw);
+% img1_pts = img1_pts.Location;
+% x1 = img1_pts(:, 1);
+% y1 = img1_pts(:, 2);
+% img2_pts = img2_pts.Location;
+% x2 = img2_pts(:, 1);
+% y2 = img2_pts(:, 2);
+% img1_features = extractHOGFeatures(image, img1_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
+% img2_features = extractHOGFeatures(image, img2_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
+
+
 %% C) Create feature vectors at each interest point. Szeliski 4.1.2
 % !!! You will need to implement get_features. !!!
 [image1_features] = get_features(image1_bw, x1, y1, feature_width);

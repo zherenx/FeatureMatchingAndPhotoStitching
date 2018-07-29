@@ -24,8 +24,10 @@ function [matches, confidences] = match_features(features1, features2)
 
 [n1, ~] = size(features1);
 [n2, ~] = size(features2);
+
 matches = [];
 confidences = [];
+
 
 for i = 1:n1
     ssd_best = Inf;
