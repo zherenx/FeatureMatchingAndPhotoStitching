@@ -22,24 +22,27 @@ function [matches, confidences] = match_features(features1, features2)
 % section 4.1.3 of Szeliski. For extra credit you can implement various
 % forms of spatial verification of matches.
 
-[n, ~] = size(features1);
+[n1, ~] = size(features1);
+[n2, ~] = size(features2);
+matches = [];
+confidences = [];
 
-for i = 1:n
-    ssd_best = 0;
-    ssd_2ndBest = 0;
+for i = 1:n1
+    ssd_best = Inf;
+    ssd_2ndBest = Inf;
     j_best = 0;
-    for j = 1:n
+    for j = 1:n2
         feature1 = features1(i, :);
         feature2 = features2(j, :);
         
-        difference = feature1 - feature2;
-        ssd = sum(difference(:) .^ 2);
+        sd = (feature1 - feature2) .^ 2;
+        ssd = sum(sd(:));
         
-        if ssd > ssd_best
+        if ssd < ssd_best
             ssd_2ndBest = ssd_best;
             ssd_best = ssd;
             j_best = j;
-        elseif ssd > ssd_2ndBest
+        elseif ssd < ssd_2ndBest
             ssd_2ndBest = ssd;
         end
     end

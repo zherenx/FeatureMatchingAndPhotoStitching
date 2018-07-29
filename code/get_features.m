@@ -63,22 +63,22 @@ features = zeros(size(x,1), 128);
 
 [im_y, im_x] = size(image);
 
-[dx dy] = gradient(image);
+[dx,dy] = gradient(image);
 
 for ind = 1:size(x,1)
-    yval = y(ind);
-    xval = x(ind);
+    yval = round(y(ind));
+    xval = round(x(ind));
 
     % Skip the feature if it is out of range.
-    if (xval-difference < 1 || xval+difference-1 > im_x || ...
-        yval-difference < 1 || yval+difference-1 > im_y)
+    if (round(xval)-difference < 1 || round(xval)+difference-1 > im_x || ...
+        round(yval)-difference < 1 || round(yval)+difference-1 > im_y)
         continue;
     end
 
-    patch_x = dx(yval-difference:yval+difference-1, ...
-                  xval-difference:xval+difference-1);
-    patch_y = dy(yval-difference:yval+difference-1, ...
-                  xval-difference:xval+difference-1);
+    patch_x = dx(round(yval)-difference:round(yval)+difference-1, ...
+                  round(xval)-difference:round(xval)+difference-1);
+    patch_y = dy(round(yval)-difference:round(yval)+difference-1, ...
+                  round(xval)-difference:round(xval)+difference-1);
               
     g = fspecial('gaussian', [16 16], 1);
     patch_x = imfilter(patch_x, g);

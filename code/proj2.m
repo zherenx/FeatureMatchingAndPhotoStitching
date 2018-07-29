@@ -55,12 +55,12 @@ image2_bw = rgb2gray(image2);
 feature_width = 16; %width and height of each local feature, in pixels. 
 
 %% B) Find distinctive points in each image. Szeliski 4.1.1
-% !!! You will need to implement get_interest_points. !!!
-[x1, y1] = get_interest_points(image1_bw, feature_width);
-[x2, y2] = get_interest_points(image2_bw, feature_width);
+% % !!! You will need to implement get_interest_points. !!!
+% [x1, y1] = get_interest_points(image1_bw, feature_width);
+% [x2, y2] = get_interest_points(image2_bw, feature_width);
 
 % % Use cheat_interest_points only for development and debugging!
-% [x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
+[x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
 
 %% C) Create feature vectors at each interest point. Szeliski 4.1.2
 % !!! You will need to implement get_features. !!!
@@ -71,6 +71,7 @@ feature_width = 16; %width and height of each local feature, in pixels.
 %% D) Match features. Szeliski 4.1.3
 % !!! You will need to implement get_features. !!!
 [matches, confidences] = match_features(image1_features, image2_features);
+% [matches, confidences] = match_features(image2_features, image1_features);
 
 %% E) Visualization
 % You might want to set 'num_pts_to_visualize' and 'num_pts_to_evaluate' to
