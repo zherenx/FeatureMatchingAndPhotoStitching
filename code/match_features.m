@@ -22,12 +22,31 @@ function [matches, confidences] = match_features(features1, features2)
 % section 4.1.3 of Szeliski. For extra credit you can implement various
 % forms of spatial verification of matches.
 
-% Placeholder that you can delete. Random matches and confidences
-num_features = min(size(features1, 1), size(features2,1));
-matches = zeros(num_features, 2);
-matches(:,1) = randperm(num_features); 
-matches(:,2) = randperm(num_features);
-confidences = rand(num_features,1);
+[n, ~] = size(features1);
+
+for i = 1:n
+    ssd_best = 0;
+    ssd_2ndBest = 0;
+    j_best = 0;
+    for j = 1:n
+        feature1 = features1(i, :);
+        feature2 = features2(j, :);
+        
+        difference = feature1 - feature2;
+        ssd = sum(difference(:) .^ 2);
+        
+        if ssd > ssd_best
+            ssd_2ndBest = ssd_best;
+            ssd_best = ssd;
+            j_best = j;
+        elseif ssd > ssd_2ndBest
+            ssd_2ndBest = ssd;
+        end
+    end
+    matches = [matches; [i j_best];];
+    ratio = ssd_best / ssd_2ndBest;
+    confidences = [confidences; ratio;];
+end
 
 % Sort the matches so that the most confident onces are at the top of the
 % list. You should probably not delete this, so that the evaluation
