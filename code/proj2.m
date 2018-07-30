@@ -23,14 +23,14 @@ close all
 % pipeline works fine for these two images (and will give you full credit
 % for this project), but you will need local features at multiple scales to
 % handle harder cases.
-% image1 = imread('../data/Notre Dame/921919841_a30df938f2_o.jpg');
-% image2 = imread('../data/Notre Dame/4191453057_c86028ce1f_o.jpg');
-% eval_file = '../data/Notre Dame/921919841_a30df938f2_o_to_4191453057_c86028ce1f_o.mat';
+image1 = imread('../data/Notre Dame/921919841_a30df938f2_o.jpg');
+image2 = imread('../data/Notre Dame/4191453057_c86028ce1f_o.jpg');
+eval_file = '../data/Notre Dame/921919841_a30df938f2_o_to_4191453057_c86028ce1f_o.mat';
 
 % %This pair is relatively easy (still harder than Notre Dame, though)
-image1 = imread('../data/Mount Rushmore/9021235130_7c2acd9554_o.jpg');
-image2 = imread('../data/Mount Rushmore/9318872612_a255c874fb_o.jpg');
-eval_file = '../data/Mount Rushmore/9021235130_7c2acd9554_o_to_9318872612_a255c874fb_o.mat';
+% image1 = imread('../data/Mount Rushmore/9021235130_7c2acd9554_o.jpg');
+% image2 = imread('../data/Mount Rushmore/9318872612_a255c874fb_o.jpg');
+% eval_file = '../data/Mount Rushmore/9021235130_7c2acd9554_o_to_9318872612_a255c874fb_o.mat';
 
 % %This pair is relatively difficult
 % image1 = imread('../data/Episcopal Gaudi/4386465943_8cf9776378_o.jpg');
@@ -58,12 +58,12 @@ feature_width = 16; %width and height of each local feature, in pixels.
 % % !!! You will need to implement get_interest_points. !!!
 % [x1, y1] = get_interest_points(image1_bw, feature_width);
 % [x2, y2] = get_interest_points(image2_bw, feature_width);
-[x1, y1] = get_interest_points_modified(image1_bw, feature_width);
-[x2, y2] = get_interest_points_modified(image2_bw, feature_width);
+% [x1, y1] = get_interest_points_modified(image1_bw, feature_width);
+% [x2, y2] = get_interest_points_modified(image2_bw, feature_width);
 
 
 % % Use cheat_interest_points only for development and debugging!
-% [x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
+[x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
 
 % img1_pts = detectHarrisFeatures(image1_bw);
 % img2_pts = detectHarrisFeatures(image2_bw);
@@ -73,8 +73,8 @@ feature_width = 16; %width and height of each local feature, in pixels.
 % img2_pts = img2_pts.Location;
 % x2 = img2_pts(:, 1);
 % y2 = img2_pts(:, 2);
-% img1_features = extractHOGFeatures(image, img1_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
-% img2_features = extractHOGFeatures(image, img2_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
+% image1_features = extractHOGFeatures(image1, img1_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
+% image2_features = extractHOGFeatures(image2, img2_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
 
 
 %% C) Create feature vectors at each interest point. Szeliski 4.1.2

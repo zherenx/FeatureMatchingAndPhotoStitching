@@ -63,11 +63,11 @@ offsetX = -w_min;
 
 T = [1,0,offsetX;0,1,offsetY;0,0,1];
 
-% for i = 1:sh
-% 	for j = 1:sw
-% 		im(i+offsetY,j+offsetX,:) = sImage(i,j,:);
-% 	end
-% end
+for i = 1:sh
+	for j = 1:sw
+		im(i+offsetY,j+offsetX,:) = sImage(i,j,:);
+	end
+end
 
 invH = inv(H);
 invT = inv(T);
