@@ -21,7 +21,7 @@ cw = size(cImage,2);
 
 
 c_vtx = cell(4,1);
-c_vtx{1} = [1;1;1]; % [y;x;1]
+c_vtx{1} = [1;1;1]; % [x;y;1]
 c_vtx{2} = [cw;1;1];
 c_vtx{3} = [1;ch;1];
 c_vtx{4} = [cw;ch;1];
@@ -39,20 +39,17 @@ h_max = sh;
 h_min = 0;
 
 for i = 1:4
-	for j = 1:4
-		if c_vtx_trans{i}(1) > w_max
-			w_max = c_vtx_trans{i}(1);
-		elseif c_vtx_trans{i}(1) < w_min
-			w_min = c_vtx_trans{i}(1);
-		end
-		
-		if c_vtx_trans{i}(2) > h_max
-			h_max = c_vtx_trans{i}(2);
-		elseif c_vtx_trans{i}(2) < h_min
-			h_min = c_vtx_trans{i}(2);
-		end
-		
-	end
+    if c_vtx_trans{i}(1) > w_max
+        w_max = c_vtx_trans{i}(1);
+    elseif c_vtx_trans{i}(1) < w_min
+        w_min = c_vtx_trans{i}(1);
+    end
+
+    if c_vtx_trans{i}(2) > h_max
+        h_max = c_vtx_trans{i}(2);
+    elseif c_vtx_trans{i}(2) < h_min
+        h_min = c_vtx_trans{i}(2);
+    end
 end
 
 
@@ -66,11 +63,11 @@ offsetX = -w_min;
 
 T = [1,0,offsetX;0,1,offsetY;0,0,1];
 
-for i = 1:sh
-	for j = 1:sw
-		im(i+offsetY,j+offsetX,:) = sImage(i,j,:);
-	end
-end
+% for i = 1:sh
+% 	for j = 1:sw
+% 		im(i+offsetY,j+offsetX,:) = sImage(i,j,:);
+% 	end
+% end
 
 invH = inv(H);
 invT = inv(T);
