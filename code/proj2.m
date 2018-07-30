@@ -88,7 +88,8 @@ feature_width = 16; %width and height of each local feature, in pixels.
 [matches, confidences] = match_features(image1_features, image2_features);
 % [matches, confidences] = match_features(image2_features, image1_features);
 
-homography = get_homography(matches(1:100, :));
+homography = get_homography(matches(1:100, :), x1, y1, x2, y2);
+im = stitch_images(image1, image2, homography);
 
 %% E) Visualization
 % You might want to set 'num_pts_to_visualize' and 'num_pts_to_evaluate' to
