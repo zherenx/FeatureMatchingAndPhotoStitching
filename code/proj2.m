@@ -23,14 +23,14 @@ close all
 % pipeline works fine for these two images (and will give you full credit
 % for this project), but you will need local features at multiple scales to
 % handle harder cases.
-image1 = imread('../data/Notre Dame/921919841_a30df938f2_o.jpg');
-image2 = imread('../data/Notre Dame/4191453057_c86028ce1f_o.jpg');
-eval_file = '../data/Notre Dame/921919841_a30df938f2_o_to_4191453057_c86028ce1f_o.mat';
+% image1 = imread('../data/Notre Dame/921919841_a30df938f2_o.jpg');
+% image2 = imread('../data/Notre Dame/4191453057_c86028ce1f_o.jpg');
+% eval_file = '../data/Notre Dame/921919841_a30df938f2_o_to_4191453057_c86028ce1f_o.mat';
 
 % %This pair is relatively easy (still harder than Notre Dame, though)
-% image1 = imread('../data/Mount Rushmore/9021235130_7c2acd9554_o.jpg');
-% image2 = imread('../data/Mount Rushmore/9318872612_a255c874fb_o.jpg');
-% eval_file = '../data/Mount Rushmore/9021235130_7c2acd9554_o_to_9318872612_a255c874fb_o.mat';
+image1 = imread('../data/Mount Rushmore/9021235130_7c2acd9554_o.jpg');
+image2 = imread('../data/Mount Rushmore/9318872612_a255c874fb_o.jpg');
+eval_file = '../data/Mount Rushmore/9021235130_7c2acd9554_o_to_9318872612_a255c874fb_o.mat';
 
 % %This pair is relatively difficult
 % image1 = imread('../data/Episcopal Gaudi/4386465943_8cf9776378_o.jpg');
@@ -88,8 +88,9 @@ feature_width = 16; %width and height of each local feature, in pixels.
 [matches, confidences] = match_features(image1_features, image2_features);
 % [matches, confidences] = match_features(image2_features, image1_features);
 
-homography = get_homography(matches(1:100, :), x1, y1, x2, y2);
+homography = get_homography(matches(1:50, :), x1, y1, x2, y2);
 im = stitch_images(image1, image2, homography);
+
 
 %% E) Visualization
 % You might want to set 'num_pts_to_visualize' and 'num_pts_to_evaluate' to

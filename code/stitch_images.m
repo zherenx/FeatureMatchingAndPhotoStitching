@@ -64,7 +64,7 @@ im = zeros(h_out,w_out,3);
 offsetY = -h_min;
 offsetX = -w_min;
 
-T = [1,0,offsetX;0,2,offsetY;0,0,1];
+T = [1,0,offsetX;0,1,offsetY;0,0,1];
 
 for i = 1:sh
 	for j = 1:sw

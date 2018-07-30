@@ -60,8 +60,8 @@ function h = computeHomography(indexArr, x1, y1, x2, y2)
         x = x1(indexArr(ind, 1)); y = y1(indexArr(ind, 1));
         xprime = x2(indexArr(ind, 2)); yprime = y2(indexArr(ind, 2));
 
-        A = [A; [x y 1 0 0 0 (-xprime)*x (-xprime)*y -xprime]];
-        A = [A; [0 0 0 x y 1 (-yprime)*x (-yprime)*y -yprime]];
+        A = [A; [x y 1 0 0 0 -xprime*x -xprime*y -xprime]];
+        A = [A; [0 0 0 x y 1 -yprime*x -yprime*y -yprime]];
     end
 
     [~, ~, V] = svd(A);
