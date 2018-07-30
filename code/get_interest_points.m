@@ -66,10 +66,10 @@ function [width, height, confidence, scale, orientation] = get_interest_points(i
     positiveR = R > 0;
     counter = sum(positiveR(:));
     
-    threshold = sum_pos / counter * 5;
+    threshold = sum_pos / counter * 2;
 
     
-    ordfilt_winsize = 20;
+    ordfilt_winsize = 11;
     
     R1= ordfilt2(R, ordfilt_winsize^2, ones(ordfilt_winsize));
 
