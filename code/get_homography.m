@@ -67,6 +67,8 @@ function h = computeHomography(indexArr, x1, y1, x2, y2)
     [~, ~, V] = svd(A);
     h = V(:, end);
     h = transpose(reshape(h, [3 3]));
+    
+    h = h ./ h(end, end);
 end
 
 

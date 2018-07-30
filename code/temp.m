@@ -1,6 +1,6 @@
 
-image1 = imread('./input/left.jpg');
-image2 = imread('./input/right.jpg');
+image1 = imread('./input/left2.jpg');
+image2 = imread('./input/right2.jpg');
 
 image1 = single(image1)/255;
 image2 = single(image2)/255;
@@ -51,7 +51,7 @@ end
     
 
 homography = get_homography(matches(1:100, :), x1, y1, x2, y2);
-im = stitch_images(image1, image2, homography);
+im = stitch_images(image2, image1, homography);
 
 
 % figure
