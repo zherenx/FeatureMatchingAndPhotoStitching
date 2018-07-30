@@ -88,6 +88,8 @@ feature_width = 16; %width and height of each local feature, in pixels.
 [matches, confidences] = match_features(image1_features, image2_features);
 % [matches, confidences] = match_features(image2_features, image1_features);
 
+homography = get_homography(matches(1:100, :));
+
 %% E) Visualization
 % You might want to set 'num_pts_to_visualize' and 'num_pts_to_evaluate' to
 % some constant (e.g. 100) once you start detecting hundreds of interest
