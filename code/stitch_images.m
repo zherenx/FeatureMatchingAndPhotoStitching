@@ -59,7 +59,7 @@ end
 w_out = w_max - w_min + 1;
 h_out = h_max - h_min + 1;
 
-im = zeros(h_out,w_out);
+im = zeros(h_out,w_out,3);
 
 offsetY = -h_min;
 offsetX = -w_min;
@@ -74,16 +74,19 @@ end
 
 invH = inv(H);
 invT = inv(T);
-invM = invH * invT;
+% invM = invH * invT;
 for y = 1: h_out
 	for x = 1:w_out
 		% compute pixel value from cImage
-		pt = invM * [x;y,1];
+		pt = invH * invT * [x;y;1];
 		rgb = getColor(cImage,pt(1),pt(2));
 		if im(y,x,:) == 0 
 			im(y,x,:) = rgb;
-		else
-			im(y,x,:) = (im(y,x,:) + rgb) * 0.5;
+        else
+            im(y,x,1) = im(y,x,1) + rgb(1);
+            im(y,x,2) = im(y,x,2) + rgb(2);
+            im(y,x,3) = im(y,x,3) + rgb(3);
+			im(y,x,:) = im(y,x,:) * 0.5;
 		end
 	end
 end
@@ -93,12 +96,17 @@ end
 
 
 function rgb = getColor(im,x,y)
-	y_floor = floor(y);
-	y_ceil = ceil(y);
-	x_floor = floor(x);
-	x_ceil = ceil(x);
-	rgb = im(y_floor, x_floor, :) * (x_ceil - x) * (y_ceil - y) ...
-        + im(y_ceil, x_floor, :) * (x_ceil - x) * (y - y_floor) ...
-        + im(y_floor, x_ceil, :) * (x - x_floor) * (y_ceil - y) ...
-        + im(y_ceil, x_ceil, :) * (x - x_floor) * (y - y_floor);
+if x < 1 || x > size(im,2) ...
+        || y < 1 || y > size(im,1)
+    rgb = [0,0,0];
+    return
+end
+y_floor = floor(y);
+y_ceil = ceil(y);
+x_floor = floor(x);
+x_ceil = ceil(x);
+rgb = im(y_floor, x_floor, :) * (x_ceil - x) * (y_ceil - y) ...
+    + im(y_ceil, x_floor, :) * (x_ceil - x) * (y - y_floor) ...
+    + im(y_floor, x_ceil, :) * (x - x_floor) * (y_ceil - y) ...
+    + im(y_ceil, x_ceil, :) * (x - x_floor) * (y - y_floor);
 end
