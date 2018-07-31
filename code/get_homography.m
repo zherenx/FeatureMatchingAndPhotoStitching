@@ -4,7 +4,7 @@ function homography = get_homography(matches, x1, y1, x2, y2)
     
     numTrial = 1000;
     numSelectedPts = 4;
-    inlier_epsilon = 1e+03;
+    inlier_epsilon = 16;
     
     num_inliers_best = 0;
     inliers_ind = [];
@@ -75,5 +75,5 @@ end
 
 function result = ssd(matrix1, matrix2)
     % sum the difference result on each row 
-    result = sum((matrix1 - matrix2) .^ 2, 2);
+    result = sqrt(sum((matrix1 - matrix2) .^ 2, 2));
 end
