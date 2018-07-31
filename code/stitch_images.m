@@ -85,10 +85,14 @@ for y = 1: h_out
 		% compute pixel value from cImage
 		pt = invH * invT * [x;y;1];
         pt = pt / pt(3);
+%         if pt(1) < 1 || pt(1) > size(cImage,2) ...
+%             || pt(2) < 1 || pt(2) > size(cImage,1)
+%             break
+%         end
 		rgb = getColor(cImage,pt(1),pt(2));
-		if im(y,x,:) == 0 
+		if im(y,x,1) <= 0 && im(y,x,2) <= 0 && im(y,x,3) <= 0
 			im(y,x,:) = rgb;
-        else
+        elseif rgb ~= 0
             im(y,x,1) = im(y,x,1) + rgb(1);
             im(y,x,2) = im(y,x,2) + rgb(2);
             im(y,x,3) = im(y,x,3) + rgb(3);

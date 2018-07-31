@@ -56,8 +56,8 @@ feature_width = 16; %width and height of each local feature, in pixels.
 
 %% B) Find distinctive points in each image. Szeliski 4.1.1
 % % !!! You will need to implement get_interest_points. !!!
-[x1, y1] = get_interest_points(image1_bw, feature_width);
-[x2, y2] = get_interest_points(image2_bw, feature_width);
+% [x1, y1] = get_interest_points(image1_bw, feature_width);
+% [x2, y2] = get_interest_points(image2_bw, feature_width);
 [x1, y1] = get_interest_points_modified(image1_bw, feature_width);
 [x2, y2] = get_interest_points_modified(image2_bw, feature_width);
 
@@ -75,6 +75,8 @@ feature_width = 16; %width and height of each local feature, in pixels.
 % y2 = img2_pts(:, 2);
 % image1_features = extractHOGFeatures(image1, img1_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
 % image2_features = extractHOGFeatures(image2, img2_pts, 'CellSize', [16 16], 'BlockSize', [4 4], 'NumBins', 8);
+% 
+% matches = matchFeatures(image1_features, image2_features);
 
 
 %% C) Create feature vectors at each interest point. Szeliski 4.1.2
@@ -88,7 +90,8 @@ feature_width = 16; %width and height of each local feature, in pixels.
 % [matches, confidences] = match_features(image1_features, image2_features);
 [matches, confidences] = match_features(image2_features, image1_features);
 
-homography = get_homography(matches(1:50, :), x2, y2, x1, y1);
+homography = get_homography(matches, x2, y2, x1, y1);
+% homography = get_homography(matches, x2, y2, x1, y1);
 im = stitch_images(image1, image2, homography);
 
 
@@ -101,29 +104,29 @@ im = stitch_images(image1, image2, homography);
 % There are two visualization functions. You can comment out one of both of
 % them if you prefer.
 num_pts_to_visualize = size(matches,1);
-show_correspondence(image1, image2, x1(matches(1:num_pts_to_visualize,1)), ...
-                                    y1(matches(1:num_pts_to_visualize,1)), ...
-                                    x2(matches(1:num_pts_to_visualize,2)), ...
-                                    y2(matches(1:num_pts_to_visualize,2)));
+show_correspondence(image2, image1, x2(matches(1:num_pts_to_visualize,1)), ...
+                                    y2(matches(1:num_pts_to_visualize,1)), ...
+                                    x1(matches(1:num_pts_to_visualize,2)), ...
+                                    y1(matches(1:num_pts_to_visualize,2)));
                                  
-show_correspondence2(image1, image2, x1(matches(1:num_pts_to_visualize,1)), ...
-                                     y1(matches(1:num_pts_to_visualize,1)), ...
-                                     x2(matches(1:num_pts_to_visualize,2)), ...
-                                     y2(matches(1:num_pts_to_visualize,2)));
+show_correspondence2(image2, image1, x2(matches(1:num_pts_to_visualize,1)), ...
+                                     y2(matches(1:num_pts_to_visualize,1)), ...
+                                     x1(matches(1:num_pts_to_visualize,2)), ...
+                                     y1(matches(1:num_pts_to_visualize,2)));
 
-%% 6) Evaluation
-% This evaluation function will only work for the Notre Dame, Episcopal
-% Gaudi, and Mount Rushmore image pairs. Comment out this function if you
-% are not testing on those image pairs. Only those pairs have ground truth
-% available. You can use collect_ground_truth_corr.m to build the ground
-% truth for other image pairs if you want, but it's very tedious. It would
-% be a great service to the class for future years, though!
-num_pts_to_evaluate = size(matches,1);
-evaluate_correspondence(image1, image2, eval_file, scale_factor, ... 
-                        x1(matches(1:num_pts_to_evaluate,1)), ...
-                        y1(matches(1:num_pts_to_evaluate,1)), ...
-                        x2(matches(1:num_pts_to_evaluate,2)), ...
-                        y2(matches(1:num_pts_to_evaluate,2)));
+% %% 6) Evaluation
+% % This evaluation function will only work for the Notre Dame, Episcopal
+% % Gaudi, and Mount Rushmore image pairs. Comment out this function if you
+% % are not testing on those image pairs. Only those pairs have ground truth
+% % available. You can use collect_ground_truth_corr.m to build the ground
+% % truth for other image pairs if you want, but it's very tedious. It would
+% % be a great service to the class for future years, though!
+% num_pts_to_evaluate = size(matches,1);
+% evaluate_correspondence(image1, image2, eval_file, scale_factor, ... 
+%                         x1(matches(1:num_pts_to_evaluate,1)), ...
+%                         y1(matches(1:num_pts_to_evaluate,1)), ...
+%                         x2(matches(1:num_pts_to_evaluate,2)), ...
+%                         y2(matches(1:num_pts_to_evaluate,2)));
 
 
 

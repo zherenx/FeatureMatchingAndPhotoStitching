@@ -1,6 +1,6 @@
 
 image1 = imread('./input/left2.jpg');
-image2 = imread('./input/right2.jpg');
+image2 = imread('./input/right.jpg');
 
 image1 = single(image1)/255;
 image2 = single(image2)/255;
@@ -35,23 +35,23 @@ feature_width = 16; %width and height of each local feature, in pixels.
 
 %% D) Match features. Szeliski 4.1.3
 % !!! You will need to implement get_features. !!!
-[matches, confidences] = match_features(image1_features, image2_features);
-% [matches, confidences] = match_features(image2_features, image1_features);
+% [matches, confidences] = match_features(image1_features, image2_features);
+[matches, confidences] = match_features(image2_features, image1_features);
 
-matchedPoint1 = [];
-matchedPoint2 = [];
-for i = 1:100
-    p1 = matches(i, 1);
-    p2 = matches(i, 2);
-    matchedPoint1 = [matchedPoint1; [x1(p1) y1(p1)]];
-    matchedPoint2 = [matchedPoint2; [x2(p2) y2(p2)]];
-end
+% matchedPoint1 = [];
+% matchedPoint2 = [];
+% for i = 1:100
+%     p1 = matches(i, 1);
+%     p2 = matches(i, 2);
+%     matchedPoint1 = [matchedPoint1; [x1(p1) y1(p1)]];
+%     matchedPoint2 = [matchedPoint2; [x2(p2) y2(p2)]];
+% end
 
 
     
 
-homography = get_homography(matches(1:100, :), x1, y1, x2, y2);
-im = stitch_images(image2, image1, homography);
+homography = get_homography(matches, x2, y2, x1, y1);
+im = stitch_images(image1, image2, homography);
 
 
 % figure

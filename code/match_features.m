@@ -25,6 +25,9 @@ function [matches, confidences] = match_features(features1, features2)
 [n1, ~] = size(features1);
 [n2, ~] = size(features2);
 
+ssd_best_threshold = 1000;
+ratio_threshold = 0.5;
+
 matches = [];
 confidences = [];
 
@@ -48,13 +51,17 @@ for i = 1:n1
             ssd_2ndBest = ssd;
         end
     end
-    matches = [matches; [i j_best];];
+    
+
     ratio = ssd_best / ssd_2ndBest;
-    confidences = [confidences; ratio;];
+    if ssd_best < ssd_best_threshold && ratio < ratio_threshold
+        matches = [matches; [i j_best];];
+        confidences = [confidences; (1-ratio);];
+    end
 end
 
 % Sort the matches so that the most confident onces are at the top of the
 % list. You should probably not delete this, so that the evaluation
 % functions can be run on the top matches easily.
-[confidences, ind] = sort(confidences, 'ascend');
+[confidences, ind] = sort(confidences, 'descend');
 matches = matches(ind,:);

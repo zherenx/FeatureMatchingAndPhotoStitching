@@ -55,7 +55,7 @@ function homography = get_homography(matches, x1, y1, x2, y2)
     
     
     % Recompute homography for the greatest inliers
-    homography = computeHomography([inliers_ind inliers_ind], x1, y1, x2, y2);
+    homography = computeHomography([inliers_ind inliers_ind], x1_matches, y1_matches, x2_matches, y2_matches);
 end
 
 
