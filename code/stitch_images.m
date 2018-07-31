@@ -20,18 +20,26 @@ cw = size(cImage,2);
 % end
 
 
-c_vtx = cell(4,1);
-c_vtx{1} = [1;1;1]; % [x;y;1]
-c_vtx{2} = [cw;1;1];
-c_vtx{3} = [1;ch;1];
-c_vtx{4} = [cw;ch;1];
+% c_vtx = cell(4,1);
+% c_vtx{1} = [1;1;1]; % [x;y;1]
+% c_vtx{2} = [cw;1;1];
+% c_vtx{3} = [1;ch;1];
+% c_vtx{4} = [cw;ch;1];
+c_vtx = [1,1,1;cw,1,1;1,ch,1;cw,ch,1]';
 
 
-c_vtx_trans = cell(4,1);
-c_vtx_trans{1} = round(H * c_vtx{1});
-c_vtx_trans{2} = round(H * c_vtx{2});
-c_vtx_trans{3} = round(H * c_vtx{3});
-c_vtx_trans{4} = round(H * c_vtx{4});
+% c_vtx_trans = cell(4,1);
+% c_vtx_trans{1} = round(H * c_vtx{1});
+% c_vtx_trans{2} = round(H * c_vtx{2});
+% c_vtx_trans{3} = round(H * c_vtx{3});
+% c_vtx_trans{4} = round(H * c_vtx{4});
+c_vtx_trans = H * c_vtx;
+
+for i = 1:size(c_vtx_trans,2)
+    c_vtx_trans(:,i) = c_vtx_trans(:,i) / c_vtx_trans(end,i);
+end
+
+c_vtx_trans = round(c_vtx_trans);
 
 w_max = sw;
 w_min = 0;
@@ -39,16 +47,16 @@ h_max = sh;
 h_min = 0;
 
 for i = 1:4
-    if c_vtx_trans{i}(1) > w_max
-        w_max = c_vtx_trans{i}(1);
-    elseif c_vtx_trans{i}(1) < w_min
-        w_min = c_vtx_trans{i}(1);
+    if c_vtx_trans(1,i) > w_max
+        w_max = c_vtx_trans(1,i);
+    elseif c_vtx_trans(1,i) < w_min
+        w_min = c_vtx_trans(1,i);
     end
 
-    if c_vtx_trans{i}(2) > h_max
-        h_max = c_vtx_trans{i}(2);
-    elseif c_vtx_trans{i}(2) < h_min
-        h_min = c_vtx_trans{i}(2);
+    if c_vtx_trans(2,i) > h_max
+        h_max = c_vtx_trans(2,i);
+    elseif c_vtx_trans(2,i) < h_min
+        h_min = c_vtx_trans(2,i);
     end
 end
 
@@ -76,6 +84,7 @@ for y = 1: h_out
 	for x = 1:w_out
 		% compute pixel value from cImage
 		pt = invH * invT * [x;y;1];
+        pt = pt / pt(3);
 		rgb = getColor(cImage,pt(1),pt(2));
 		if im(y,x,:) == 0 
 			im(y,x,:) = rgb;

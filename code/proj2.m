@@ -56,8 +56,8 @@ feature_width = 16; %width and height of each local feature, in pixels.
 
 %% B) Find distinctive points in each image. Szeliski 4.1.1
 % % !!! You will need to implement get_interest_points. !!!
-% [x1, y1] = get_interest_points(image1_bw, feature_width);
-% [x2, y2] = get_interest_points(image2_bw, feature_width);
+[x1, y1] = get_interest_points(image1_bw, feature_width);
+[x2, y2] = get_interest_points(image2_bw, feature_width);
 [x1, y1] = get_interest_points_modified(image1_bw, feature_width);
 [x2, y2] = get_interest_points_modified(image2_bw, feature_width);
 
@@ -85,11 +85,11 @@ feature_width = 16; %width and height of each local feature, in pixels.
 
 %% D) Match features. Szeliski 4.1.3
 % !!! You will need to implement get_features. !!!
-[matches, confidences] = match_features(image1_features, image2_features);
-% [matches, confidences] = match_features(image2_features, image1_features);
+% [matches, confidences] = match_features(image1_features, image2_features);
+[matches, confidences] = match_features(image2_features, image1_features);
 
-homography = get_homography(matches(1:50, :), x1, y1, x2, y2);
-im = stitch_images(image2, image1, homography);
+homography = get_homography(matches(1:50, :), x2, y2, x1, y1);
+im = stitch_images(image1, image2, homography);
 
 
 %% E) Visualization

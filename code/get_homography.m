@@ -9,9 +9,9 @@ function homography = get_homography(matches, x1, y1, x2, y2)
     num_inliers_best = 0;
     inliers_ind = [];
     
-    [nx, ~] = size(x1);
-    [ny, ~] = size(x2);
-    min_xy = min(nx, ny);
+    [nx1, ~] = size(x1);
+    [nx2, ~] = size(x2);
+    min_x1x2 = min(nx1, nx2);
     
     
     for trial = 1:numTrial
@@ -28,13 +28,13 @@ function homography = get_homography(matches, x1, y1, x2, y2)
         transformed_x1y1 = [x1 y1 ones(numel(x1), 1)] * h';
 
         % scale coordinates: making the z component to become 1
-        transformed_x1y1 = transformed_x1y1(1:min_xy, :);
+        transformed_x1y1 = transformed_x1y1(1:min_x1x2, :);
         z = transformed_x1y1(:, end);
         transformed_x1y1 = bsxfun(@rdivide, transformed_x1y1, z);
         transformed_x1y1 = transformed_x1y1(:, 1:2);
 
         x2y2 = [x2 y2];
-        x2y2 = x2y2(1:min_xy, :);
+        x2y2 = x2y2(1:min_x1x2, :);
         ssd_result = ssd(transformed_x1y1, x2y2);
         num_inliers = sum(ssd_result < inlier_epsilon);
         
@@ -69,7 +69,7 @@ function h = computeHomography(indexArr, x1, y1, x2, y2)
     h = transpose(reshape(h, [3 3]));
     
     % Scale the homography so that the last element is 1
-    h = h ./ h(end, end);
+%     h = h ./ h(end, end);
 end
 
 
