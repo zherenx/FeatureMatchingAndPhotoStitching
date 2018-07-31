@@ -56,5 +56,5 @@ end
 % Sort the matches so that the most confident onces are at the top of the
 % list. You should probably not delete this, so that the evaluation
 % functions can be run on the top matches easily.
-[confidences, ind] = sort(confidences, 'descend');
+[confidences, ind] = sort(confidences, 'ascend');
 matches = matches(ind,:);

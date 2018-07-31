@@ -68,6 +68,7 @@ function h = computeHomography(indexArr, x1, y1, x2, y2)
     h = V(:, end);
     h = transpose(reshape(h, [3 3]));
     
+    % Scale the homography so that the last element is 1
     h = h ./ h(end, end);
 end
 
