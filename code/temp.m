@@ -1,6 +1,6 @@
 
-image1 = imread('./input/left2.jpg');
-image2 = imread('./input/right.jpg');
+image1 = imread('./input/left3.jpg');
+image2 = imread('./input/right4.jpg');
 
 image1 = single(image1)/255;
 image2 = single(image2)/255;
