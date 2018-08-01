@@ -1,6 +1,10 @@
 
-image1 = imread('./input/left3.jpg');
-image2 = imread('./input/right4.jpg');
+% image1 = imread('./input/left3.jpg');
+% image2 = imread('./input/right4.jpg');
+
+image1 = imread('U:/469/IMG_2291.jpg');
+image2 = imread('U:/469/IMG_2292.jpg');
+
 
 image1 = single(image1)/255;
 image2 = single(image2)/255;
@@ -8,7 +12,7 @@ image2 = single(image2)/255;
 %make images smaller to speed up the algorithm. This parameter gets passed
 %into the evaluation code so don't resize the images except by changing
 %this parameter.
-scale_factor = 0.5; 
+scale_factor = 2; 
 image1 = imresize(image1, scale_factor, 'bilinear');
 image2 = imresize(image2, scale_factor, 'bilinear');
 
