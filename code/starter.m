@@ -1,5 +1,5 @@
 
-image_codes = 14:17;
+image_codes = 5:6;
 
 images = {};
 results = {};
@@ -13,7 +13,7 @@ for i = 1:numel(image_codes)
         continue;
     end
     
-    im = do_pipeline(results{end}, image);
+    [im, matches] = do_pipeline(results{end}, image);
     results{end+1} = im;
 end
 

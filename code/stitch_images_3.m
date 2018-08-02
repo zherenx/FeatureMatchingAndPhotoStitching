@@ -67,3 +67,24 @@ for y = 1: h_out
         end
 	end
 end
+
+
+
+end
+
+
+function rgb = getColor(im,x,y)
+if x < 1 || x > size(im,2) ...
+        || y < 1 || y > size(im,1)
+    rgb = [0,0,0];
+    return
+end
+y_floor = floor(y);
+y_ceil = ceil(y);
+x_floor = floor(x);
+x_ceil = ceil(x);
+rgb = im(y_floor, x_floor, :) * (x_ceil - x) * (y_ceil - y) ...
+    + im(y_ceil, x_floor, :) * (x_ceil - x) * (y - y_floor) ...
+    + im(y_floor, x_ceil, :) * (x - x_floor) * (y_ceil - y) ...
+    + im(y_ceil, x_ceil, :) * (x - x_floor) * (y - y_floor);
+end
