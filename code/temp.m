@@ -55,7 +55,7 @@ feature_width = 16; %width and height of each local feature, in pixels.
 
 
 homography = get_homography(matches, x2, y2, x1, y1);
-im = stitch_images(image1, image2, homography);
+im = stitch_images_3(image1, image2, homography);
 
 
 % figure

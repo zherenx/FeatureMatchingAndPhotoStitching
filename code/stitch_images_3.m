@@ -1,4 +1,4 @@
-function im = stitch_images_2(sImage, cImage, H)
+function im = stitch_images_3(sImage, cImage, H)
 
 sh = size(sImage,1);
 sw = size(sImage,2);
@@ -68,6 +68,25 @@ for y = 1: h_out
 	end
 end
 
+overlap = ims & imc;
+
+errpatch = sum((ims .* overlap - imc .* overlap).^2, 3);
+
+temp = ones(size(ims));
+temp = temp .* 255^2;
+temp = temp .* ~overlap;
+temp2d = sum(temp,3);
+
+errpatch = errpatch + temp2d;
+
+% mask = zeros(size(im, 1), size(im, 2));
+% mask(:, 1:size(im, 2)/2) = 1;
+mask = transpose(cut(errpatch'));
+
+
+% mask = mask .* overlap(:,:,1);
+
+im = laplacianBlend(ims, imc, mask);
 
 
 end
