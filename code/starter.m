@@ -1,4 +1,5 @@
 
+
 image_codes = 2341:2345;
 
 images = {};
@@ -13,7 +14,7 @@ for i = 1:numel(image_codes)
         continue;
     end
     
-    im = do_pipeline(results{end}, image);
+    [im, matches] = do_pipeline(results{end}, image);
     results{end+1} = im;
 end
 
