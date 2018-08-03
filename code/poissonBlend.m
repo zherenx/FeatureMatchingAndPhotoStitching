@@ -5,7 +5,7 @@ function im_blend = poissonBlend(im_s, mask_s, im_background)
     im2var = zeros(imh, imw);
     im2var(1:imh*imw) = 1:imh*imw;
     
-    parfor channel = 1:nb
+    for channel = 1:nb
 %         e = 0;
 %         b = zeros(imh*imw, 1);
         
