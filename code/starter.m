@@ -1,5 +1,5 @@
 
-image_codes = 5:6;
+image_codes = 5:8;
 
 images = {};
 results = {};

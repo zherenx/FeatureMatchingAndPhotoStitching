@@ -13,5 +13,5 @@ function [im, matches] = do_pipeline(im_ding, im_dong)
     [matches, confidences] = match_features(im_dong_features, im_ding_features);
     homography = get_homography(matches, x2, y2, x1, y1);
     
-    im = stitch_images_3(im_ding, im_dong, homography);
+    im = stitch_images_2(im_ding, im_dong, homography);
 end
