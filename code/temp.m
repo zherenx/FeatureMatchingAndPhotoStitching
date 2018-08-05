@@ -2,11 +2,14 @@
 % image1 = imread('./input/left3.jpg');
 % image2 = imread('./input/right4.jpg');
 
-image1 = imread('U:/469/0006.jpg');
-image2 = imread('U:/469/0007.jpg');
+% image1 = imread('U:/469/0006.jpg');
+% image2 = imread('U:/469/0007.jpg');
 
 % image1 = imread('./output/01.jpg');
 % image2 = imread('U:/469/IMG_2305.jpg');
+
+image1 = imread('~/Downloads/0001.jpg');
+image2 = imread('~/Downloads/0002.jpg');
 
 
 image1 = single(image1)/255;
@@ -19,8 +22,8 @@ scale_factor = 0.2;
 image1 = imresize(image1, scale_factor, 'bilinear');
 image2 = imresize(image2, scale_factor, 'bilinear');
 
-image1 = imrotate(image1,-90);
-image2 = imrotate(image2,-90);
+% image1 = imrotate(image1,-90);
+% image2 = imrotate(image2,-90);
 
 % You don't have to work with grayscale images. Matching with color
 % information might be helpful.
