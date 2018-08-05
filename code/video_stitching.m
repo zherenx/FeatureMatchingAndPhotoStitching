@@ -2,7 +2,7 @@ close all
 
 profile on
 
-filename = 'U:/469/IMG_2286.MOV';
+filename = 'U:/469/IMG_2352.MOV';
 
 v = VideoReader(filename);
 

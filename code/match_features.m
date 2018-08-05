@@ -26,7 +26,7 @@ function [matches, confidences] = match_features(features1, features2)
 [n2, ~] = size(features2);
 
 ssd_best_threshold = 1000;
-ratio_threshold = 0.5;
+ratio_threshold = 0.6;
 
 matches = [];
 confidences = [];
