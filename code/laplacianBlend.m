@@ -6,13 +6,20 @@ function im = laplacianBlend(im1, im2, mask)
     
     mask = single(mask);
     
-    % Build a Gaussian pyramid of region mask
+    overlap = im1 & im2;
+    
+    % Build a Gaussian pyramid of region mask and overlap
     maskPyramid = cell(1, numLevels);
     maskPyramid{1} = mask;
+%     overlapPyramid = cell(1, numLevels);
+%     overlapPyramid{1} = overlap;
     for iter = 2:numLevels
         im = impyramid(maskPyramid{iter-1}, 'reduce');
         im = imgaussfilt(im, 0.5 * iter);
         maskPyramid{iter} = im;
+        
+%         temp = impyramid(overlapPyramid{iter-1}, 'reduce');
+%         overlapPyramid{iter} = temp;
     end
     
     % Blend each level of pyramid using region mask from the same level
@@ -22,19 +29,20 @@ function im = laplacianBlend(im1, im2, mask)
         lp1 = imresize(laplace1{iter}, maxsize(1:2));
         lp2 = imresize(laplace2{iter}, maxsize(1:2));
         mask = imresize(maskPyramid{iter}, maxsize(1:2));
-        blendedPyramid{iter} = lp1 .* (1 - mask) + ...
-                               lp2 .* mask;
+        blendedPyramid{iter} = lp2 .* (1-mask) + lp1 .* mask;
     end
     
     % Collapse the pyramid to get the final blended image
     last_mask = impyramid(maskPyramid{end}, 'reduce');
-    im = gauss1{end} .* (1 - last_mask) + gauss2{end} .* last_mask;
+    im = gauss1{end} .* last_mask + gauss2{end} .* (1-last_mask);
     
     for iter = numLevels:-1:1
         im = impyramid(im, 'expand');
         maxsize = max(size(im), size(blendedPyramid{iter}));
         im = imresize(im, maxsize(1:2)) + imresize(blendedPyramid{iter}, maxsize(1:2));
     end
+    
+    im = im .* overlap + im1 .* ~overlap + im2 .* ~overlap;
     
     [im1xsize, im1ysize, ~] = size(im1);
     im = imresize(im, [im1xsize im1ysize]);
