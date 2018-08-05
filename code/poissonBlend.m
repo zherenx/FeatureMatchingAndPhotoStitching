@@ -72,6 +72,9 @@ function im_blend = poissonBlend(im_s, mask_s, im_background)
 %         end
         
         A = sparse(Ay, Ax, Aval, imh*imw, imh*imw);
+        Ay = [];
+        Ax = [];
+        Aval = [];
 
         v = A \ b;
         im_blend(:, :, channel) = reshape(v, [imh imw]);
