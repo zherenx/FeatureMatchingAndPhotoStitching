@@ -33,7 +33,6 @@ image2_bw = rgb2gray(image2);
 feature_width = 16; %width and height of each local feature, in pixels. 
 
 %% B) Find distinctive points in each image. Szeliski 4.1.1
-% % !!! You will need to implement get_interest_points. !!!
 % [x1, y1] = get_interest_points(image1_bw, feature_width);
 % [x2, y2] = get_interest_points(image2_bw, feature_width);
 [x1, y1] = get_interest_points_modified(image1_bw, feature_width);
